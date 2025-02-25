@@ -1,32 +1,31 @@
+import random
+
 def tanh(x):
-    e_pos = 2.718281828459045 ** x  
-    e_neg = 2.718281828459045 ** (-x)  
-    return (e_pos - e_neg) / (e_pos + e_neg)
-                        
-w1, w2, w3, w4, w5, w6, w7, w8 = 0.15, 0.2, 0.25, 0.3, 0.4, 0.45, 0.5, 0.55
+    exp_pos = 2.718281828459045 ** x  
+    exp_neg = 2.718281828459045 ** (-x)  
+    return (exp_pos - exp_neg) / (exp_pos + exp_neg)
+
+input_neurons = 2
+hidden_neurons = 2
+output_neurons = 2
+weights_input_hidden = [[random.uniform(-0.5, 0.5) for _ in range(hidden_neurons)] for _ in range(input_neurons)]
+weights_hidden_output = [[random.uniform(-0.5, 0.5) for _ in range(output_neurons)] for _ in range(hidden_neurons)]
+
+b1 = 0.5
+b2 = 0.7
+
+inputs = [0.05, 0.1]
+
+hidden_outputs = []
+for j in range(hidden_neurons):
+    net_h = sum(inputs[i] * weights_input_hidden[i][j] for i in range(input_neurons)) + b1
+    hidden_outputs.append(tanh(net_h))
 
 
-b1, b2 = 0.5, 0.7
+final_outputs = []
+for k in range(output_neurons):
+    net_o = sum(hidden_outputs[j] * weights_hidden_output[j][k] for j in range(hidden_neurons)) + b2
+    final_outputs.append(tanh(net_o))
 
-
-i1, i2 = 0.05, 0.10
-
-
-net_h1 = (w1 * i1) + (w2 * i2) + (b1 * 1)
-net_h2 = (w3 * i1) + (w4 * i2) + (b1 * 1)
-
-
-out_h1 = tanh(net_h1)
-out_h2 = tanh(net_h2)
-
-
-net_o1 = (w5 * out_h1) + (w6 * out_h2) + (b2 * 1)
-net_o2 = (w7 * out_h1) + (w8 * out_h2) + (b2 * 1)
-
-
-out_o1 = tanh(net_o1)
-out_o2 = tanh(net_o2)
-
-
-print("Output O1:", out_o1)
-print("Output O2:", out_o2)
+print("Hidden layer outputs:", hidden_outputs)
+print("Output layer outputs:", final_outputs)
